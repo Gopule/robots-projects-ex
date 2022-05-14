@@ -21,9 +21,12 @@ defmodule RobotsWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", RobotsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api" do
+    pipe_through :api
+
+    get "/", Absinthe.Plug.GraphiQL, schema: RobotsWeb.Api.Schema, interface: :playground
+    post "/", Absinthe.Plug, schema: RobotsWeb.Api.Schema
+  end
 
   # Enables LiveDashboard only for development
   #
