@@ -18,12 +18,14 @@ defmodule Robots.DataCase do
 
   using do
     quote do
-      alias Robots.Repo
-
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
       import Robots.DataCase
+
+      import Robots.Factory
+
+      alias Robots.Repo
     end
   end
 

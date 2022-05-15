@@ -16,6 +16,7 @@ defmodule RobotsWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -23,17 +24,30 @@ defmodule RobotsWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import RobotsWeb.ConnCase
+      import Robots.Factory
 
       alias RobotsWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
       @endpoint RobotsWeb.Endpoint
+
+      defp graphql_request(query) do
+        build_conn()
+        |> post("/api", query: query)
+        |> json_response(200)
+      end
+
+      defp graphql_request(query, variables) do
+        build_conn()
+        |> post("/api", query: query, variables: variables)
+        |> json_response(200)
+      end
     end
   end
 
   setup tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Robots.Repo, shared: not tags[:async])
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
+    pid = Sandbox.start_owner!(Robots.Repo, shared: not tags[:async])
+    on_exit(fn -> Sandbox.stop_owner(pid) end)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
