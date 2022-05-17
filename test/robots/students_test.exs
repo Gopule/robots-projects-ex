@@ -18,10 +18,14 @@ defmodule Robots.StudentsTest do
 
       assert {:ok, %Student{id: ^student_id}} = Students.get_student(student_id)
     end
+
+    test "invalid id returns error" do
+      assert {:error, "A student with this ID was not found."} = Students.get_student(1)
+    end
   end
 
   describe "create_student/1 " do
-    test "with valid data creates a student" do
+    test "with valid fields creates a student" do
       valid_attrs = %{
         email: "some email",
         name: "some name",
@@ -39,42 +43,41 @@ defmodule Robots.StudentsTest do
              } = student
     end
 
-    test "create_student/1 with invalid data returns error changeset" do
+    test "invalid fields returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Students.create_student(%{id: 1})
     end
   end
 
-  # test "update_student/2 with valid data updates the student" do
-  #   student = student_fixture()
+  describe "update_student/1 " do
+    test "with valid fields updates a student" do
+      %Student{id: student_id} =
+        insert(:student, name: "Jimmy Butler", email: "jbutler@email.com", skill: "Basketball")
 
-  #   update_attrs = %{
-  #     email: "some updated email",
-  #     name: "some updated name",
-  #     pic: "some updated pic",
-  #     skill: "some updated skill"
-  #   }
+      update_attrs = %{
+        id: student_id,
+        name: "John Adams",
+        email: "jadams@email.com",
+        skill: "Public Speaking"
+      }
 
-  #   assert {:ok, %Student{} = student} = Students.update_student(student, update_attrs)
-  #   assert student.email == "some updated email"
-  #   assert student.name == "some updated name"
-  #   assert student.pic == "some updated pic"
-  #   assert student.skill == "some updated skill"
-  # end
+      assert {:ok, %Student{id: ^student_id} = student} = Students.update_student(update_attrs)
 
-  # test "update_student/2 with invalid data returns error changeset" do
-  #   student = student_fixture()
-  #   assert {:error, %Ecto.Changeset{}} = Students.update_student(student, @invalid_attrs)
-  #   assert student == Students.get_student(student.id)
-  # end
+      assert %Student{
+               name: "John Adams",
+               email: "jadams@email.com",
+               skill: "Public Speaking"
+             } = student
+    end
+
+    test "invalid id returns error" do
+      assert {:error, "A student with this ID was not found."} =
+               Students.update_student(%{id: 1, name: "James Buchanan"})
+    end
+  end
 
   # test "delete_student/1 deletes the student" do
   #   student = student_fixture()
   #   assert {:ok, %Student{}} = Students.delete_student(student)
   #   assert_raise Ecto.NoResultsError, fn -> Students.get_student(student.id) end
-  # end
-
-  # test "change_student/1 returns a student changeset" do
-  #   student = student_fixture()
-  #   assert %Ecto.Changeset{} = Students.change_student(student)
   # end
 end

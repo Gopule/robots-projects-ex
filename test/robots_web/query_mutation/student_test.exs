@@ -16,7 +16,7 @@ defmodule RobotsWeb.QueryMutation.StudentTest do
 
       assert %{"data" => %{"student" => student}} = graphql_request(@query, %{id: student_id})
 
-      student_id = Integer.to_string(student_id)
+      student_id = student_id |> Integer.to_string()
 
       assert %{"id" => ^student_id} = student
     end
