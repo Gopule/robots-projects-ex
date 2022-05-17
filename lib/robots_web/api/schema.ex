@@ -20,11 +20,30 @@ defmodule RobotsWeb.Api.Schema do
 
       resolve(fn _, attrs, _ ->
         case Students.create_student(attrs) do
-          {:error, changeset} ->
-            {:error, changeset}
-
           {:ok, student} ->
             {:ok, student}
+
+          {:error, changeset} ->
+            {:error, changeset}
+        end
+      end)
+    end
+
+    @desc "Updates a single student."
+    field :update_student, :student do
+      arg(:id, non_null(:id))
+      arg(:name, :string)
+      arg(:email, :string)
+      arg(:skill, :string)
+      arg(:pic, :string)
+
+      resolve(fn _, attrs, _ ->
+        case Students.update_student(attrs) do
+          {:ok, updated_student} ->
+            {:ok, updated_student}
+
+          {:error, _} ->
+            {:error, "There was an error updating this student."}
         end
       end)
     end

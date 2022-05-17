@@ -28,11 +28,11 @@ defmodule Robots.Students do
 
   ## Examples
 
-      iex> get_student!(123)
+      iex> get_student(123)
       %Student{}
 
-      iex> get_student!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_student(456)
+      {:error, error_message}
 
   """
   def get_student(id) do
@@ -68,17 +68,21 @@ defmodule Robots.Students do
 
   ## Examples
 
-      iex> update_student(student, %{field: new_value})
+      iex> update_student(%{field: new_value})
       {:ok, %Student{}}
 
-      iex> update_student(student, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      iex> update_student(%{field: bad_value})
+      {:error, error}
 
   """
-  def update_student(%Student{} = student, attrs) do
-    student
-    |> Student.changeset(attrs)
-    |> Repo.update()
+  def update_student(%{id: student_id} = attrs) do
+    with {:ok, %Student{} = student} <- get_student(student_id) do
+      student
+      |> Student.changeset(attrs |> Map.delete(:id))
+      |> Repo.update()
+    else
+      error -> error
+    end
   end
 
   @doc """
@@ -95,18 +99,5 @@ defmodule Robots.Students do
   """
   def delete_student(%Student{} = student) do
     Repo.delete(student)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking student changes.
-
-  ## Examples
-
-      iex> change_student(student)
-      %Ecto.Changeset{data: %Student{}}
-
-  """
-  def change_student(%Student{} = student, attrs \\ %{}) do
-    Student.changeset(student, attrs)
   end
 end
