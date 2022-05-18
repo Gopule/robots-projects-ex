@@ -24,8 +24,6 @@ defmodule Robots.Students do
   @doc """
   Gets a single student.
 
-  Raises `Ecto.NoResultsError` if the Student does not exist.
-
   ## Examples
 
       iex> get_student(123)
