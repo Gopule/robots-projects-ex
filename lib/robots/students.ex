@@ -97,7 +97,12 @@ defmodule Robots.Students do
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_student(%Student{} = student) do
-    Repo.delete(student)
+  def delete_student(student_id) do
+    with {:ok, student} <- get_student(student_id),
+         {:ok, student} <- Repo.delete(student) do
+      {:ok, student}
+    else
+      error -> error
+    end
   end
 end
