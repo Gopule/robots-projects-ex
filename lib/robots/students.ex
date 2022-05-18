@@ -94,7 +94,7 @@ defmodule Robots.Students do
       {:ok, %Student{}}
 
       iex> delete_student(student)
-      {:error, %Ecto.Changeset{}}
+      {:error, error_message}
 
   """
   def delete_student(student_id) do

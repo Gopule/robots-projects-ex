@@ -48,7 +48,7 @@ defmodule RobotsWeb.Api.Schema do
       end)
     end
 
-    @desc "Updates a single student."
+    @desc "deletes a single student."
     field :delete_student, :student do
       arg(:id, non_null(:id))
 
