@@ -75,9 +75,17 @@ defmodule Robots.StudentsTest do
     end
   end
 
-  # test "delete_student/1 deletes the student" do
-  #   student = student_fixture()
-  #   assert {:ok, %Student{}} = Students.delete_student(student)
-  #   assert_raise Ecto.NoResultsError, fn -> Students.get_student(student.id) end
-  # end
+  describe "delete_student/1" do
+    test "deletes the student with matching id" do
+      %Student{id: student_id} = insert(:student)
+
+      assert {:ok, %Student{id: ^student_id}} = Students.delete_student(student_id)
+
+      assert {:error, "A student with this ID was not found."} = Students.get_student(student_id)
+    end
+
+    test "invalid id returns error" do
+      assert {:error, "A student with this ID was not found."} = Students.get_student(1)
+    end
+  end
 end

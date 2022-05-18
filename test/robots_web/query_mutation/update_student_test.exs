@@ -3,7 +3,7 @@ defmodule RobotsWeb.QueryMutation.UpdateStudentTest do
   alias Robots.Students.Student
 
   @query """
-  mutation updateStudent($id: ID!, $name: String, $email: String, $skill: String, $pic: String) {
+  mutation UpdateStudent($id: ID!, $name: String, $email: String, $skill: String, $pic: String) {
     updateStudent(id: $id, name: $name, email: $email, skill: $skill, pic: $pic) {
       id
       name
