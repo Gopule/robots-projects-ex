@@ -27,7 +27,7 @@ defmodule Robots.Students do
   ## Examples
 
       iex> get_student(123)
-      %Student{}
+      {:ok, %Student{}}
 
       iex> get_student(456)
       {:error, error_message}
